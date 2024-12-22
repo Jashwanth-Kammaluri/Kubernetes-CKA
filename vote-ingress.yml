@@ -1,0 +1,61 @@
+#Ingress for vote.jashwanthdevops.live
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vote-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - hosts:
+    - "vote.jashwanthdevops.live"
+    - "www.jashwanthdevops.live"
+    secretName: ngnix-wc-tls-secret 
+  rules:
+  - host: vote.jashwanthdevops.live
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vote
+            port:
+              number: 80
+  - host: www.jashwanthdevops.live
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vote
+            port:
+              number: 80
+
+#Ingress for naked k8sbatch17.xyz domain
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vote-ingress-naked
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - hosts:
+    - "jashwanthdevops.live"
+    secretName: ngnix-nk-tls-secret 
+  rules:
+  - host: jashwanthdevops.live
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vote
+            port:
+              number: 80
